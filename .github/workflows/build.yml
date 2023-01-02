@@ -1,0 +1,37 @@
+name: Build on Windows
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Windows Toolchain
+        run: echo "vs_version=2022" >> "$GITHUB_ENV"
+      - name: Enable Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1.12.0
+      - name: Cache VLC
+        uses: actions/cache@v3.2.2
+        with:
+          path: lib
+          key: ${{ runner.os }}-vlc-cache
+      - name: Download VLC
+        run: .\download-vlc.ps1
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja -DVLC_PATH=lib/vlc
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: vlc-win10smtc
+          path: build/src/vlc-win10smtc.dll
