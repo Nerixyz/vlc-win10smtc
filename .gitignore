@@ -6,6 +6,9 @@
 # VLC SDK
 sdk/
 
+# Build output
+/build
+
 # User-specific files
 *.rsuser
 *.suo
