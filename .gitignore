@@ -5,6 +5,7 @@
 
 # VLC SDK
 sdk/
+lib/
 
 # Build output
 /build
