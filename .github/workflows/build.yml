@@ -2,9 +2,9 @@ name: Build on Windows
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ['master', 'nerix-adjustments']
   pull_request:
-    branches: [ "master" ]
+    branches: ['master', 'nerix-adjustments']
 
 env:
   BUILD_TYPE: Release
